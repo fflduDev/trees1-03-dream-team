@@ -1,7 +1,9 @@
 
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class OrgChartImpl implements OrgChart{
 
@@ -11,7 +13,8 @@ public class OrgChartImpl implements OrgChart{
 	@Override
 	public void addRoot(Employee e) {
 		// TODO Auto-generated method stub
-		
+		GenericTreeNode<Employee> rootEmployee = new GenericTreeNode<Employee>(e);
+		nodes.add(rootEmployee);
 	}
 
 	@Override
@@ -23,7 +26,17 @@ public class OrgChartImpl implements OrgChart{
 	@Override
 	public void addDirectReport(Employee manager, Employee newPerson) {
 		// TODO Auto-generated method stub
-		
+		for (int i = 0; i < nodes.size(); i++) {
+			GenericTreeNode<Employee> currentEmployee = nodes.get(i);
+			if (currentEmployee.data.equals(manager)) {
+				GenericTreeNode<Employee> newEmployee = new GenericTreeNode<Employee>(newPerson);
+				
+				currentEmployee.addChild(newEmployee);
+				nodes.add(newEmployee);
+				
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -41,6 +54,29 @@ public class OrgChartImpl implements OrgChart{
 	@Override
 	public void showOrgChartBreadthFirst() {
 		// TODO Auto-generated method stub
+		
+		Queue<GenericTreeNode<Employee>> queue = new LinkedList<>();
+		queue.add(nodes.get(0));
+		
+		if (nodes.isEmpty()) {
+			return;
+		}
+		
+		while (!queue.isEmpty()) {
+			GenericTreeNode<Employee> current = queue.remove();
+			
+			System.out.println(current.data);
+			for (GenericTreeNode<Employee> child : current.children) {
+				queue.add(child);
+			}
+		}
+		
+		
+		
+		//
+		
+		//while (!queue.isEmpty()) {
+			
 		
 	}
 	
