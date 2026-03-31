@@ -32,20 +32,16 @@ public class testOrgChart {
 		company.addDirectReport(e7, e9);
 		
 		// show it depth first
+		System.out.println("DFS1");
+		System.out.println();
 		company.showOrgChartDepthFirst();
-		
+		System.out.println();
+
 		// show breadth first
+		System.out.println("BFS1");
+		System.out.println();
 		company.showOrgChartBreadthFirst();
-		
-		// and remove some people
-		company.removeEmployee(e4);
-		company.removeEmployee(e5);
-		
-		// show it depth first
-		company.showOrgChartDepthFirst();
-		
-		// show breadth first
-		company.showOrgChartBreadthFirst();
+		System.out.println();
 		
 
 	}

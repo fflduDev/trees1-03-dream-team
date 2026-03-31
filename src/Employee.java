@@ -46,10 +46,24 @@ public class Employee implements Comparable<Employee> {
 		this.position = position;
 	}
 
-	public boolean equals(Employee e) {
-		if (this.name.equals(e.name) && this.id == e.id && this.position.equals(e.position))
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
 			return true;
-		return false;
+		}
+		if (!(obj instanceof Employee)) {
+			return false;
+		}
+		Employee e = (Employee) obj;
+		return this.name.equals(e.name) && this.id.equals(e.id) && this.position.equals(e.position);
+	}
+
+	@Override
+	public int hashCode() {
+		int result = name.hashCode();
+		result = 31 * result + id.hashCode();
+		result = 31 * result + position.hashCode();
+		return result;
 	}
 
 	public String toString() {
