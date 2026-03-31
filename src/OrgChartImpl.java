@@ -47,9 +47,31 @@ public class OrgChartImpl implements OrgChart{
 
 	@Override
 	public void showOrgChartDepthFirst() {
-		// TODO Auto-generated method stub
-		
+		GenericTreeNode<Employee> rootEmployee = nodes.get(0);
+		showOrgChartDepthFirst(rootEmployee);
 	}
+	
+	
+	private void showOrgChartDepthFirst(GenericTreeNode<Employee> e) {
+		// TODO Auto-generated method stub
+		if (e == null) {
+			return;
+		}
+		
+		
+
+        // Visit the current node
+        System.out.println("Current: " + e.data);
+        System.out.println("--- ");
+
+        // Recurse on each child left-to-right (pre-order)
+        for (GenericTreeNode<Employee> child : e.children)
+        {
+        	showOrgChartDepthFirst(child);
+        }
+	}
+	
+
 
 	@Override
 	public void showOrgChartBreadthFirst() {
