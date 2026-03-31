@@ -54,7 +54,7 @@ public class OrgChartImpl implements OrgChart{
 	@Override
 	public void showOrgChartBreadthFirst() {
 		// TODO Auto-generated method stub
-		
+
 		Queue<GenericTreeNode<Employee>> queue = new LinkedList<>();
 		queue.add(nodes.get(0));
 		
