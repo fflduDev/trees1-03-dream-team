@@ -58,24 +58,26 @@ public class OrgChartImpl implements OrgChart{
 		Queue<GenericTreeNode<Employee>> queue = new LinkedList<>();
 		queue.add(nodes.get(0));
 		
-		if (nodes.isEmpty()) {
+		if (queue.isEmpty()) {
 			return;
 		}
-		
+
 		while (!queue.isEmpty()) {
-			GenericTreeNode<Employee> current = queue.remove();
-			
-			System.out.println(current.data);
-			for (GenericTreeNode<Employee> child : current.children) {
-				queue.add(child);
+			int n = queue.size();
+			while (n > 0) {
+				GenericTreeNode<Employee> current = queue.peek();
+				queue.remove();
+				System.out.println(current.data + " ");
+
+				for (int i = 0; i < current.children.size(); i++) {
+					queue.add(current.children.get(i));
+				}
+				n--;
 			}
+ 			
+			
+			System.out.println();
 		}
-		
-		
-		
-		//
-		
-		//while (!queue.isEmpty()) {
 			
 		
 	}
