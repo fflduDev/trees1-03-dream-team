@@ -58,8 +58,6 @@ public class OrgChartImpl implements OrgChart{
 			return;
 		}
 		
-		
-
         // Visit the current node
         System.out.println("Current: " + e.data);
         System.out.println("--- ");
