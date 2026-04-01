@@ -19,8 +19,7 @@ public class OrgChartImpl implements OrgChart{
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		nodes.clear();
 	}
 
 	@Override
@@ -41,8 +40,37 @@ public class OrgChartImpl implements OrgChart{
 
 	@Override
 	public void removeEmployee(Employee firedPerson) {
-		// TODO Auto-generated method stub
-		
+		if (nodes.isEmpty() || firedPerson == null) {
+			return;
+		}
+
+		GenericTreeNode<Employee> firedNode = null;
+		GenericTreeNode<Employee> parentNode = null;
+
+		// Step 1 (started): find the node to remove and its parent.
+		for (GenericTreeNode<Employee> possibleParent : nodes) {
+			if (possibleParent.data.equals(firedPerson)) {
+				firedNode = possibleParent;
+			}
+			for (GenericTreeNode<Employee> child : possibleParent.children) {
+				if (child.data.equals(firedPerson)) {
+					firedNode = child;
+					parentNode = possibleParent;
+					break;
+				}
+			}
+			if (firedNode != null) {
+				break;
+			}
+		}
+
+		if (firedNode == null) {
+			return;
+		}
+
+		// TODO Step 2: if firedNode is not root, move firedNode.children to parentNode.
+		// TODO Step 3: remove firedNode from parentNode.children and from nodes list.
+		// TODO Step 4: decide root-removal behavior (ignore, clear, or promote child).
 	}
 
 	@Override
@@ -50,14 +78,13 @@ public class OrgChartImpl implements OrgChart{
 		GenericTreeNode<Employee> rootEmployee = nodes.get(0);
 		showOrgChartDepthFirst(rootEmployee);
 	}
-	
-	
+		
 	private void showOrgChartDepthFirst(GenericTreeNode<Employee> e) {
 		// TODO Auto-generated method stub
 		if (e == null) {
 			return;
 		}
-		
+
         // Visit the current node
         System.out.println("Current: " + e.data);
         System.out.println("--- ");
@@ -73,7 +100,9 @@ public class OrgChartImpl implements OrgChart{
 
 	@Override
 	public void showOrgChartBreadthFirst() {
-		// TODO Auto-generated method stub
+		if (nodes.isEmpty()) {
+			return;
+		}
 
 		Queue<GenericTreeNode<Employee>> queue = new LinkedList<>();
 		queue.add(nodes.get(0));
@@ -83,23 +112,25 @@ public class OrgChartImpl implements OrgChart{
 		}
 
 		while (!queue.isEmpty()) {
-			int n = queue.size();
-			while (n > 0) {
-				GenericTreeNode<Employee> current = queue.peek();
-				queue.remove();
-				System.out.println(current.data + " ");
+			GenericTreeNode<Employee> current = queue.remove();
+			System.out.println(current.data);
 
-				for (int i = 0; i < current.children.size(); i++) {
-					queue.add(current.children.get(i));
-				}
-				n--;
+			for (int i = 0; i < current.children.size(); i++) {
+				queue.add(current.children.get(i));
 			}
- 			
-			
-			System.out.println();
 		}
 			
 		
+	}
+
+	private void depthFirstPrint(GenericTreeNode<Employee> node) {
+		if (node == null) {
+			return;
+		}
+		System.out.println(node.data);
+		for (GenericTreeNode<Employee> child : node.children) {
+			depthFirstPrint(child);
+		}
 	}
 	
 	
