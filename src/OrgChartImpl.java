@@ -43,34 +43,47 @@ public class OrgChartImpl implements OrgChart{
 		if (nodes.isEmpty() || firedPerson == null) {
 			return;
 		}
-
+		
 		GenericTreeNode<Employee> firedNode = null;
 		GenericTreeNode<Employee> parentNode = null;
-
-		// Step 1 (started): find the node to remove and its parent.
-		for (GenericTreeNode<Employee> possibleParent : nodes) {
-			if (possibleParent.data.equals(firedPerson)) {
-				firedNode = possibleParent;
+		
+		for (GenericTreeNode<Employee> node : nodes) {
+			if (node.data.equals(firedPerson)) {
+				firedNode = node;
 			}
-			for (GenericTreeNode<Employee> child : possibleParent.children) {
+			
+			for (GenericTreeNode<Employee> child : node.children) {
 				if (child.data.equals(firedPerson)) {
-					firedNode = child;
-					parentNode = possibleParent;
-					break;
+					parentNode = node;
 				}
 			}
-			if (firedNode != null) {
-				break;
-			}
 		}
-
+		
 		if (firedNode == null) {
 			return;
 		}
-
-		// TODO Step 2: if firedNode is not root, move firedNode.children to parentNode.
-		// TODO Step 3: remove firedNode from parentNode.children and from nodes list.
-		// TODO Step 4: decide root-removal behavior (ignore, clear, or promote child).
+		
+		if (parentNode == null) {
+			
+			if (firedNode.children.isEmpty()) {
+				nodes.remove(firedNode);
+				return;
+			}
+			
+			GenericTreeNode<Employee> newRoot = firedNode.children.get(0);
+			
+			for (int i = 1; i < firedNode.children.size(); i++) {
+				newRoot.addChild(firedNode.children.get(i));
+			}
+			
+			nodes.remove(firedNode);
+			nodes.remove(newRoot);
+			nodes.add(0, newRoot);
+			return;
+		}
+		
+		parentNode.removeChild(firedPerson);
+		nodes.remove(firedNode);
 	}
 
 	@Override

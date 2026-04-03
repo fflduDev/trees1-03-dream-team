@@ -1,5 +1,3 @@
-
-
 public class testOrgChart {
 
 	public static void main(String[] args) {
@@ -32,16 +30,24 @@ public class testOrgChart {
 		company.addDirectReport(e7, e9);
 		
 		// show it depth first
-		System.out.println("DFS1");
-		System.out.println();
+		System.out.println("Depth first before layoffs: ");
 		company.showOrgChartDepthFirst();
-		System.out.println();
-
+		
 		// show breadth first
-		System.out.println("BFS1");
-		System.out.println();
+		System.out.println("Breadth first before layoffs: ");
 		company.showOrgChartBreadthFirst();
-		System.out.println();
+		
+		// and remove some people
+		company.removeEmployee(e4);
+		company.removeEmployee(e5);
+		
+		// show it depth first
+		System.out.println("Depth first after layoffs: ");
+		company.showOrgChartDepthFirst();
+		
+		// show breadth first
+		System.out.println("Breadth first after layoffs: ");
+		company.showOrgChartBreadthFirst();
 		
 
 	}

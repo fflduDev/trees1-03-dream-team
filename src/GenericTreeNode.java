@@ -19,6 +19,20 @@ public class GenericTreeNode<E> {
 		// this one is a little harder.
 		// what do you do when the item has children?
 		// I suggest "give them to the parent"
+		for (int i = 0; i < children.size(); i++) {
+			GenericTreeNode<E> child = children.get(i);
+			
+			if (child.data.equals(theItem)) {
+				children.remove(i);
+				
+				for (GenericTreeNode<E> grandChild : child.children) {
+					children.add(i, grandChild);
+					i++;
+				}
+				return;
+			}
+			
+		}
 	}
 	
 	
