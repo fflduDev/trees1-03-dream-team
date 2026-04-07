@@ -1,5 +1,3 @@
-
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,112 +37,95 @@ public class OrgChartImpl implements OrgChart{
 	}
 
 	@Override
-	public void removeEmployee(Employee firedPerson) {
-		if (nodes.isEmpty() || firedPerson == null) {
-			return;
-		}
-		
-		GenericTreeNode<Employee> firedNode = null;
-		GenericTreeNode<Employee> parentNode = null;
-		
-		for (GenericTreeNode<Employee> node : nodes) {
-			if (node.data.equals(firedPerson)) {
-				firedNode = node;
-			}
-			
-			for (GenericTreeNode<Employee> child : node.children) {
-				if (child.data.equals(firedPerson)) {
-					parentNode = node;
-				}
-			}
-		}
-		
-		if (firedNode == null) {
-			return;
-		}
-		
-		if (parentNode == null) {
-			
-			if (firedNode.children.isEmpty()) {
-				nodes.remove(firedNode);
-				return;
-			}
-			
-			GenericTreeNode<Employee> newRoot = firedNode.children.get(0);
-			
-			for (int i = 1; i < firedNode.children.size(); i++) {
-				newRoot.addChild(firedNode.children.get(i));
-			}
-			
-			nodes.remove(firedNode);
-			nodes.remove(newRoot);
-			nodes.add(0, newRoot);
-			return;
-		}
-		
-		parentNode.removeChild(firedPerson);
-		nodes.remove(firedNode);
-	}
+public void removeEmployee(Employee firedPerson) {
+    if (nodes.isEmpty() || firedPerson == null) {
+        return;
+    }
 
+    GenericTreeNode<Employee> firedNode = null;
+    GenericTreeNode<Employee> parentNode = null;
+
+    /*finding fired node& parent */
+    for (GenericTreeNode<Employee> node : nodes) {
+        if (node.data.equals(firedPerson)) {
+            firedNode = node;
+        }
+
+        for (GenericTreeNode<Employee> child : node.children) {
+            if (child.data.equals(firedPerson)) {
+                parentNode = node;
+                firedNode = child;
+                break;
+            }
+        }
+
+        if (firedNode != null) {
+            break;
+        }
+    }
+
+    if (firedNode == null) {
+        return;
+    }
+
+    if (parentNode == null) {
+        /*root node being removed */
+        if (firedNode.children.isEmpty()) {
+            nodes.remove(firedNode);
+            return;
+        }
+        GenericTreeNode<Employee> newRoot = firedNode.children.get(0);
+        for (int i = 1; i < firedNode.children.size(); i++) {
+            GenericTreeNode<Employee> child = firedNode.children.get(i);
+            newRoot.addChild(child);
+        }
+
+        nodes.remove(firedNode);
+        nodes.remove(newRoot);
+        nodes.add(0, newRoot);
+        return;
+    }
+
+    /*child to parent */
+    for (GenericTreeNode<Employee> child : firedNode.children) {
+        parentNode.addChild(child); // properly add child using parent's method
+    }
+
+    firedNode.children.clear(); // remove references from fired node
+    parentNode.removeChild(firedPerson);
+    nodes.remove(firedNode);
+}
 	@Override
 	public void showOrgChartDepthFirst() {
-		GenericTreeNode<Employee> rootEmployee = nodes.get(0);
-		showOrgChartDepthFirst(rootEmployee);
-	}
-		
-	private void showOrgChartDepthFirst(GenericTreeNode<Employee> e) {
 		// TODO Auto-generated method stub
-		if (e == null) {
-			return;
-		}
-
-        // Visit the current node
-        System.out.println("Current: " + e.data);
-        System.out.println("--- ");
-
-        // Recurse on each child left-to-right (pre-order)
-        for (GenericTreeNode<Employee> child : e.children)
-        {
-        	showOrgChartDepthFirst(child);
-        }
+		if (nodes.isEmpty()) return;
+		depthFirstPrint(nodes.get(0));
 	}
-	
 
+	private void depthFirstPrint(GenericTreeNode<Employee> node) {
+		if (node == null) return;
+		System.out.println(node.data);
+		
+		// Recurse on each child left-to-right (pre-order)
+		for (GenericTreeNode<Employee> child : node.children) {
+			depthFirstPrint(child);
+		}
+	}
 
 	@Override
 	public void showOrgChartBreadthFirst() {
-		if (nodes.isEmpty()) {
-			return;
-		}
+		if (nodes.isEmpty()) return;
 
 		Queue<GenericTreeNode<Employee>> queue = new LinkedList<>();
 		queue.add(nodes.get(0));
-		
-		if (queue.isEmpty()) {
-			return;
-		}
 
 		while (!queue.isEmpty()) {
 			GenericTreeNode<Employee> current = queue.remove();
 			System.out.println(current.data);
 
-			for (int i = 0; i < current.children.size(); i++) {
-				queue.add(current.children.get(i));
+			for (GenericTreeNode<Employee> child : current.children) {
+				queue.add(child);
 			}
 		}
-			
-		
 	}
-
-	private void depthFirstPrint(GenericTreeNode<Employee> node) {
-		if (node == null) {
-			return;
-		}
-		System.out.println(node.data);
-		for (GenericTreeNode<Employee> child : node.children) {
-			depthFirstPrint(child);
-		}
-	}
-	
-	
 }

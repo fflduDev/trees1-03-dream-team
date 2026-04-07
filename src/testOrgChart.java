@@ -30,24 +30,31 @@ public class testOrgChart {
 		company.addDirectReport(e7, e9);
 		
 		// show it depth first
-		System.out.println("Depth first before layoffs: ");
+		System.out.println("DFS1 ");
 		company.showOrgChartDepthFirst();
+		System.out.println("--------------");
 		
 		// show breadth first
-		System.out.println("Breadth first before layoffs: ");
+		System.out.println(); /*newline for better output design */
+		System.out.println("BFS1 ");
 		company.showOrgChartBreadthFirst();
+		System.out.println("--------------");
 		
 		// and remove some people
 		company.removeEmployee(e4);
 		company.removeEmployee(e5);
 		
 		// show it depth first
-		System.out.println("Depth first after layoffs: ");
+		System.out.println(); /*newline for better output design */
+		System.out.println("DFS2 - after remove ");
 		company.showOrgChartDepthFirst();
+		System.out.println("--------------");
 		
 		// show breadth first
-		System.out.println("Breadth first after layoffs: ");
+		System.out.println(); /*newline for better output design */
+		System.out.println("BFS2 - after remove ");
 		company.showOrgChartBreadthFirst();
+		System.out.println("--------------");
 		
 
 	}
